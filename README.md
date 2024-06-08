@@ -68,18 +68,15 @@ The application will be accessible at `http://localhost:3000`.
 
 ### Docker Deployment
 
-To deploy the application using Docker, follow these steps:
+To deploy the application using Docker Hub, follow these steps:
 
-1. **Build the Docker Image**:
+1. **Pull and Run the Docker Image from Docker Hub**:
 ```
-docker build -t youtube-music-live-svg .
-```
-
-2. **Run the Docker Container**:
-```
-docker run -p 3000:3000 -e OAUTH_JSON="<your_oauth_json_content>" youtube-music-live-svg
+docker pull edgarburgues/youtube-music-live-svg
+docker run -p 3000:3000 -e OAUTH_JSON="<your_oauth_json_content>" edgarburgues/youtube-music-live-svg
 ```
 The application will be accessible at `http://localhost:3000`.
+
 
 ## File Descriptions
 
