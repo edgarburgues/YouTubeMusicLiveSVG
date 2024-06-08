@@ -1,6 +1,24 @@
 # YouTube Music Live SVG
 
 This project provides a Node.js application that serves SVG visualizations based on YouTube Music history. The application offers the following main functionalities:
+<table align="center">
+  <tr>
+    <td colspan="" align="center">
+      <strong>/svg</strong>
+    </td>
+    <td colspan="" align="center">
+      <strong>/svg-vertical</strong>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img height="100%" width="100%" src="https://youtubemusiclivesvg.azurewebsites.net/api/svg?nocache=timestamps" alt="YTMusic Widget"/>
+    </td>
+    <td>
+      <img height="100%" width="100%" src="https://youtubemusiclivesvg.azurewebsites.net/api/svg-vertical?nocache=timestamps" alt="YTMusic Widget"/>
+    </td>
+  </tr>
+</table>
 
 1. **API Endpoints**:
 
@@ -50,18 +68,15 @@ The application will be accessible at `http://localhost:3000`.
 
 ### Docker Deployment
 
-To deploy the application using Docker, follow these steps:
+To deploy the application using without building, follow these steps:
 
-1. **Build the Docker Image**:
+1. **Pull and Run the Docker Image from Docker Hub**:
 ```
-docker build -t youtube-music-live-svg .
-```
-
-2. **Run the Docker Container**:
-```
-docker run -p 3000:3000 -e OAUTH_JSON="<your_oauth_json_content>" youtube-music-live-svg
+docker pull edgarburgues/youtube-music-live-svg
+docker run -p 3000:3000 -e OAUTH_JSON="<your_oauth_json_content>" edgarburgues/youtube-music-live-svg
 ```
 The application will be accessible at `http://localhost:3000`.
+
 
 ## File Descriptions
 
