@@ -68,7 +68,7 @@ The application will be accessible at `http://localhost:3000`.
 
 ### Docker Deployment
 
-To deploy the application using Docker Hub, follow these steps:
+To deploy the application using without building, follow these steps:
 
 1. **Pull and Run the Docker Image from Docker Hub**:
 ```
