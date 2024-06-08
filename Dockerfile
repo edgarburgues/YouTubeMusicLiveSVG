@@ -4,8 +4,8 @@ FROM oven/bun:latest
 # Install git in the container image
 RUN apt-get update && apt-get install -y git
 
-# Clone the GitHub repository
-RUN git clone https://github.com/edgarburgues/YouTubeMusicLiveSVG /app
+# Copy the current directory into the container
+COPY . /app
 
 # Set the working directory
 WORKDIR /app
