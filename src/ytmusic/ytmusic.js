@@ -1,6 +1,5 @@
 const axios = require("axios");
 const { OAuth2Client } = require("google-auth-library");
-const fs = require("fs");
 
 const YTM_DOMAIN = "https://music.youtube.com";
 const YTM_BASE_API = `${YTM_DOMAIN}/youtubei/v1/`;
