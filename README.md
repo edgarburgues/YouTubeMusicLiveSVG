@@ -19,6 +19,7 @@ This project provides a Node.js application that serves SVG visualizations based
     </td>
   </tr>
 </table>
+
 1. **API Endpoints**:
 
    - `/api/history`: Retrieves the history of videos played on YouTube Music.
