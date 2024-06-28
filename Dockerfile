@@ -1,20 +1,22 @@
-# Use the oven/bun base image
+# Dockerfile optimizado
+
 FROM oven/bun:latest
 
-# Install git in the container image
-RUN apt-get update && apt-get install -y git
+# Instalar git
+RUN apt-get update && apt-get install -y git && apt-get clean
 
-# Copy the current directory into the container
-COPY . /app
-
-# Set the working directory
-WORKDIR /app
-
-# Install dependencies using bun
+# Copiar y instalar dependencias primero para aprovechar el cacheo
+COPY package.json bun.lockb ./
 RUN bun install
 
-# Expose port 3000
+# Copiar el resto de la aplicación
+COPY . /app
+
+# Establecer directorio de trabajo
+WORKDIR /app
+
+# Exponer el puerto 3000
 EXPOSE 3000
 
-# Define the default command to run your application
+# Comando por defecto para ejecutar la aplicación
 CMD ["bun", "src/server.js"]

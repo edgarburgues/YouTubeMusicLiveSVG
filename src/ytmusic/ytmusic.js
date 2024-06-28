@@ -1,5 +1,6 @@
 const axios = require("axios");
 const { OAuth2Client } = require("google-auth-library");
+const { logger } = require("../utils/logger");
 
 const YTM_DOMAIN = "https://music.youtube.com";
 const YTM_BASE_API = `${YTM_DOMAIN}/youtubei/v1/`;
@@ -56,7 +57,7 @@ async function getVisitorId() {
 
 class YTMusic {
   constructor() {
-    console.debug("Initializing YTMusic...");
+    logger.debug("Initializing YTMusic...");
     this.auth = oauthJson.access_token;
     this.refreshToken = oauthJson.refresh_token;
 
@@ -71,7 +72,7 @@ class YTMusic {
   }
 
   async refreshAccessToken() {
-    console.debug("Refreshing access token...");
+    logger.debug("Refreshing access token...");
     try {
       const { credentials } = await this.oauth2Client.refreshAccessToken();
       this.auth = credentials.access_token;
@@ -81,9 +82,9 @@ class YTMusic {
 
       // Update headers with the new token
       this.headers = initializeHeaders(this.auth);
-      console.debug("Access token refreshed successfully.");
+      logger.debug("Access token refreshed successfully.");
     } catch (error) {
-      console.error("Error refreshing access token:", error.message);
+      logger.error("Error refreshing access token:", error.message);
       throw new Error("Failed to refresh access token.");
     }
   }
@@ -96,7 +97,7 @@ class YTMusic {
     }
 
     try {
-      console.debug(`Sending request to endpoint: ${endpoint}`);
+      logger.debug(`Sending request to endpoint: ${endpoint}`);
       const response = await axios.post(`${YTM_BASE_API}${endpoint}${YTM_PARAMS}${additionalParams}`, body, {
         headers: this.headers,
       });
@@ -104,7 +105,7 @@ class YTMusic {
     } catch (error) {
       if (error.response && error.response.status === 401) {
         // If the error is 401 (Unauthorized), attempt to refresh the token and retry the request
-        console.warn("Access token expired, attempting to refresh...");
+        logger.warn("Access token expired, attempting to refresh...");
         await this.refreshAccessToken();
         // Retry the request with the new token
         try {
@@ -116,14 +117,14 @@ class YTMusic {
           const message = retryError.response
             ? `Server returned HTTP ${retryError.response.status}: ${retryError.response.statusText}.`
             : `Error sending request after refreshing token: ${retryError.message}`;
-          console.error(message);
+          logger.error(message);
           throw new Error(message);
         }
       } else {
         const message = error.response
           ? `Server returned HTTP ${error.response.status}: ${error.response.statusText}.`
           : `Error sending request: ${error.message}`;
-        console.error(message);
+        logger.error(message);
         throw new Error(message);
       }
     }

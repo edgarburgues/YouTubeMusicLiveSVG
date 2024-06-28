@@ -2,30 +2,31 @@ const axios = require("axios");
 const ColorThief = require("colorthief");
 const fs = require("fs");
 const path = require("path");
+const { logger } = require("./logger");
 
 async function getFirstVideoFromHistory(ytmusic) {
-  console.debug("Fetching first video from history...");
+  logger.debug("Fetching first video from history...");
   try {
     const history = await ytmusic.getHistory();
     if (history) {
-      console.debug(`Found video: ${history.song} by ${history.author}`);
+      logger.debug(`Found video: ${history.song} by ${history.author}`);
       return {
         title: history.song,
         thumbnail: history.thumbnail,
         author: history.author,
       };
     } else {
-      console.debug("No history found");
+      logger.debug("No history found");
       return null;
     }
   } catch (error) {
-    console.error(`Error fetching video history: ${error.message}`);
+    logger.error(`Error fetching video history: ${error.message}`);
     return null;
   }
 }
 
 async function getImageAndPalette(thumbnailUrl) {
-  console.debug(`Fetching image and palette for thumbnail: ${thumbnailUrl}`);
+  logger.debug(`Fetching image and palette for thumbnail: ${thumbnailUrl}`);
   try {
     const response = await axios.get(thumbnailUrl, { responseType: "arraybuffer" });
     const buffer = Buffer.from(response.data, "binary");
@@ -40,10 +41,10 @@ async function getImageAndPalette(thumbnailUrl) {
 
     fs.unlinkSync(tempFilePath); // Elimina el archivo temporal después de su uso
 
-    console.debug(`Dominant colors: ${dominantColor1Hex}, ${dominantColor2Hex}`);
+    logger.debug(`Dominant colors: ${dominantColor1Hex}, ${dominantColor2Hex}`);
     return { imgBase64Url, dominantColor1Hex, dominantColor2Hex };
   } catch (error) {
-    console.error(`Error fetching image and palette: ${error.message}`);
+    logger.error(`Error fetching image and palette: ${error.message}`);
     return { imgBase64Url: null, dominantColor1Hex: "#000000", dominantColor2Hex: "#000000" };
   }
 }
