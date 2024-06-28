@@ -1,0 +1,17 @@
+2024-06-28T11:53:09.827Z [DEBUG] Initializing YTMusic...
+2024-06-28T11:53:09.837Z [INFO] Servidor corriendo en http://localhost:3000
+2024-06-28T11:53:14.015Z [DEBUG] Received request for /api/svg
+2024-06-28T11:53:14.016Z [DEBUG] Fetching first video from history...
+2024-06-28T11:53:14.339Z [DEBUG] Sending request to endpoint: browse
+2024-06-28T11:53:14.375Z [WARN] Access token expired, attempting to refresh...
+2024-06-28T11:53:14.375Z [DEBUG] Refreshing access token...
+2024-06-28T11:53:14.518Z [DEBUG] Access token refreshed successfully.
+2024-06-28T11:53:16.028Z [DEBUG] Found video: Flying Free by Pont Aeri Vol.4
+2024-06-28T11:53:16.028Z [DEBUG] Fetching image and palette for thumbnail: https://lh3.googleusercontent.com/I4RjbJZAU3ruEG-OGv3eDj0IbQ0jvbxyO6AxnjI8wSbBNBw9oasNGrDAtw0rxw1KiRRJXas6hJycVSjJ=w120-h120-l90-rj
+2024-06-28T11:53:16.108Z [DEBUG] Dominant colors: #252925, #e9db3a
+2024-06-28T11:53:36.303Z [DEBUG] Received request for /api/svg
+2024-06-28T11:53:36.303Z [DEBUG] Fetching first video from history...
+2024-06-28T11:53:36.431Z [DEBUG] Sending request to endpoint: browse
+2024-06-28T11:53:37.712Z [DEBUG] Found video: Potra Salvaje (Hard Remix) by Isabel Aaiún
+2024-06-28T11:53:37.713Z [DEBUG] Fetching image and palette for thumbnail: https://lh3.googleusercontent.com/e7rJV5PlE4Bm0dwum9sxMetvZDt0GtFztqKaJU1DU7pop0CWJbCLvDX--7QkMvmWC25-z3tAyetEfC6z=w120-h120-l90-rj
+2024-06-28T11:53:37.739Z [DEBUG] Dominant colors: #ddc2d6, #413d42
