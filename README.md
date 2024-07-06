@@ -1,22 +1,18 @@
 # YouTube Music Live SVG
 
-This project provides a Node.js application that serves SVG visualizations based on YouTube Music history. The application offers the following main functionalities:
+This project provides a Bun.js application that serves SVG visualizations based on YouTube Music history. The application offers the following main functionalities:
 <table align="center">
   <tr>
     <td colspan="" align="center">
       <strong>/svg</strong>
     </td>
-    <td colspan="" align="center">
-      <strong>/svg-vertical</strong>
-    </td>
+
   </tr>
   <tr>
     <td>
-      <img height="100%" width="100%" src="https://youtubemusiclivesvg.azurewebsites.net/api/svg?nocache=timestamps" alt="YTMusic Widget"/>
+      <img height="100%" width="100%" src="https://youtubemusiclivesvg.azurewebsites.net/api/svg" alt="YTMusic Widget"/>
     </td>
-    <td>
-      <img height="100%" width="100%" src="https://youtubemusiclivesvg.azurewebsites.net/api/svg-vertical?nocache=timestamps" alt="YTMusic Widget"/>
-    </td>
+
   </tr>
 </table>
 
