@@ -6,17 +6,13 @@ This project provides a Node.js application that serves SVG visualizations based
     <td colspan="" align="center">
       <strong>/svg</strong>
     </td>
-    <td colspan="" align="center">
-      <strong>/svg-vertical</strong>
-    </td>
+
   </tr>
   <tr>
     <td>
       <img height="100%" width="100%" src="https://youtubemusiclivesvg.azurewebsites.net/api/svg" alt="YTMusic Widget"/>
     </td>
-    <td>
-      <img height="100%" width="100%" src="https://youtubemusiclivesvg.azurewebsites.net/api/svg-vertical" alt="YTMusic Widget"/>
-    </td>
+
   </tr>
 </table>
 
