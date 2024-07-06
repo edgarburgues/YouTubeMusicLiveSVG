@@ -12,10 +12,10 @@ This project provides a Node.js application that serves SVG visualizations based
   </tr>
   <tr>
     <td>
-      <img height="100%" width="100%" src="https://youtubemusiclivesvg.azurewebsites.net/api/svg?nocache=timestamps" alt="YTMusic Widget"/>
+      <img height="100%" width="100%" src="https://youtubemusiclivesvg.azurewebsites.net/api/svg" alt="YTMusic Widget"/>
     </td>
     <td>
-      <img height="100%" width="100%" src="https://youtubemusiclivesvg.azurewebsites.net/api/svg-vertical?nocache=timestamps" alt="YTMusic Widget"/>
+      <img height="100%" width="100%" src="https://youtubemusiclivesvg.azurewebsites.net/api/svg-vertical" alt="YTMusic Widget"/>
     </td>
   </tr>
 </table>
