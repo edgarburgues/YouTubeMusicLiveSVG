@@ -48,12 +48,16 @@ async function getImageAndPalette(thumbnailUrl) {
   } catch (error) {
     console.error(`Error fetching image and palette: ${error.message}`);
     // Fallback colors and image
-    const imgBase64Url = 'data:image/svg+xml;base64,' + Buffer.from(`
+    const imgBase64Url =
+      "data:image/svg+xml;base64," +
+      Buffer.from(
+        `
       <svg width="120" height="120" xmlns="http://www.w3.org/2000/svg">
         <rect width="100%" height="100%" fill="#333" />
         <text x="50%" y="50%" font-family="Arial" font-size="24" fill="white" text-anchor="middle">Error</text>
       </svg>
-    `).toString('base64');
+    `
+      ).toString("base64");
     return { imgBase64Url, dominantColor1Hex: "#000000", dominantColor2Hex: "#000000" };
   }
 }

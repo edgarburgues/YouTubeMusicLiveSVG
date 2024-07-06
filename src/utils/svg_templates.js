@@ -97,10 +97,7 @@ function generateSvgContentVertical(title, author, imgBase64Url, dominantColor1H
   `;
 }
 
-
-
 module.exports = {
   generateSvgContent,
   generateSvgContentVertical,
-  
 };

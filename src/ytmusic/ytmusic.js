@@ -1,7 +1,7 @@
-// ytmusic.js
 const axios = require("axios");
 const { OAuth2Client } = require("google-auth-library");
 const { logger } = require("../utils/logger");
+const NodeCache = require("node-cache");
 
 const YTM_DOMAIN = "https://music.youtube.com";
 const YTM_BASE_API = `${YTM_DOMAIN}/youtubei/v1/`;
@@ -18,6 +18,7 @@ if (!OAUTH_JSON) {
 }
 
 const oauthJson = JSON.parse(OAUTH_JSON);
+const visitorIdCache = new NodeCache({ stdTTL: 600 });
 
 function initializeHeaders(auth) {
   const headers = {
@@ -46,12 +47,15 @@ function initializeContext() {
 }
 
 async function getVisitorId() {
-  const response = await axios.get(YTM_DOMAIN);
-  const matches = response.data.match(/ytcfg\.set\s*\(\s*({.+?})\s*\)\s*;/);
-  let visitor_id = "";
-  if (matches) {
-    const ytcfg = JSON.parse(matches[1]);
-    visitor_id = ytcfg.VISITOR_DATA;
+  let visitor_id = visitorIdCache.get("visitor_id");
+  if (!visitor_id) {
+    const response = await axios.get(YTM_DOMAIN);
+    const matches = response.data.match(/ytcfg\.set\s*\(\s*({.+?})\s*\)\s*;/);
+    if (matches) {
+      const ytcfg = JSON.parse(matches[1]);
+      visitor_id = ytcfg.VISITOR_DATA;
+      visitorIdCache.set("visitor_id", visitor_id);
+    }
   }
   return { "X-Goog-Visitor-Id": visitor_id };
 }

@@ -17,6 +17,7 @@
     "html-escaper": "^3.0.3",
     "jimp": "^0.22.12",
     "random": "^4.1.0",
-    "winston": "^3.13.0"
+    "winston": "^3.13.0",
+    "node-cache": "^5.1.2"
   }
 }
