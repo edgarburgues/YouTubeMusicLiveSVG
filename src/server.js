@@ -1,11 +1,10 @@
 const express = require("express");
-const { Worker } = require("worker_threads");
 const YTMusic = require("./ytmusic/ytmusic");
 const { getFirstVideoFromHistory, getImageAndPalette } = require("./utils/utils");
 const { generateSvgContent, generateSvgContentVertical } = require("./utils/svg_templates");
-
 const app = express();
 const port = 3000;
+
 const ytmusic = new YTMusic();
 
 app.get("/api/history", async (req, res) => {
