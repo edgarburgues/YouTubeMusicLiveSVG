@@ -1,6 +1,7 @@
 const html = require("html-escaper");
 
 function generateBarsSvg(dominantColor1Hex, barCount = 10, barSpeed = 1) {
+  console.debug(`Generating bars SVG with color: ${dominantColor1Hex}, barCount: ${barCount}, barSpeed: ${barSpeed}`);
   let bars = [];
   for (let i = 0; i < barCount; i++) {
     let beginTime = (Math.random() * 1.5).toFixed(2);
@@ -15,6 +16,7 @@ function generateBarsSvg(dominantColor1Hex, barCount = 10, barSpeed = 1) {
 }
 
 function generateSvgContent(title, author, imgBase64Url, dominantColor1Hex, dominantColor2Hex, barCount = 10, barSpeed = 1) {
+  console.debug(`Generating SVG content for title: ${title}, author: ${author}`);
   const barsSvg = generateBarsSvg(dominantColor1Hex, barCount, barSpeed);
 
   if (title.length > 19) {
@@ -28,33 +30,34 @@ function generateSvgContent(title, author, imgBase64Url, dominantColor1Hex, domi
   return `
     <!-- Hecho por @edgarburgues -->
     <svg width="500" height="200" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:${dominantColor1Hex};stop-opacity:1" />
-          <stop offset="100%" style="stop-color:${dominantColor2Hex};stop-opacity:1" />
-        </linearGradient>
-        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
-          <feOffset dx="2" dy="2" result="offsetblur"/>
-          <feMerge>
-            <feMergeNode/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-        <mask id="mask">
-          <rect x="25" y="25" width="150" height="150" rx="5" ry="5" fill="white"/>
-        </mask>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#grad1)" rx="15" ry="15"/>
-      <image href="${imgBase64Url}" x="25" y="25" height="150" width="150" mask="url(#mask)"/>
-      <text x="200" y="70" font-family="Arial" font-size="24" fill="white" filter="url(#shadow)">${html.escape(title)}</text>
-      <text x="200" y="100" font-family="Arial" font-size="18" fill="white" filter="url(#shadow)">${html.escape(author)}</text>
-      ${barsSvg}
+        <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:${dominantColor1Hex};stop-opacity:1" />
+                <stop offset="100%" style="stop-color:${dominantColor2Hex};stop-opacity:1" />
+            </linearGradient>
+            <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+                <feOffset dx="2" dy="2" result="offsetblur"/>
+                <feMerge> 
+                    <feMergeNode/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+            <mask id="mask">
+                <rect x="25" y="25" width="150" height="150" rx="5" ry="5" fill="white"/>
+            </mask>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grad1)" rx="15" ry="15"/>
+        <image href="${imgBase64Url}" x="25" y="25" height="150" width="150" mask="url(#mask)"/>
+        <text x="200" y="70" font-family="Arial" font-size="24" fill="white" filter="url(#shadow)">${html.escape(title)}</text>
+        <text x="200" y="100" font-family="Arial" font-size="18" fill="white" filter="url(#shadow)">${html.escape(author)}</text>
+        ${barsSvg}
     </svg>
   `;
 }
 
 function generateSvgContentVertical(title, author, imgBase64Url, dominantColor1Hex, dominantColor2Hex, barCount = 5, barSpeed = 1) {
+  console.debug(`Generating vertical SVG content for title: ${title}, author: ${author}`);
   const barsSvg = generateBarsSvg(dominantColor1Hex, barCount, barSpeed);
 
   if (title.length > 16) {
@@ -68,33 +71,36 @@ function generateSvgContentVertical(title, author, imgBase64Url, dominantColor1H
   return `
     <!-- Hecho por @edgarburgues -->
     <svg width="200" height="250" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:${dominantColor1Hex};stop-opacity:1" />
-          <stop offset="100%" style="stop-color:${dominantColor2Hex};stop-opacity:1" />
-        </linearGradient>
-        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
-          <feOffset dx="2" dy="2" result="offsetblur"/>
-          <feMerge>
-            <feMergeNode/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-        <mask id="mask">
-          <rect x="25" y="25" width="150" height="150" rx="5" ry="5" fill="white"/>
-        </mask>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#grad1)" rx="15" ry="15"/>
-      <image href="${imgBase64Url}" x="25" y="25" height="150" width="150" mask="url(#mask)"/>
-      <text x="100" y="200" font-family="Arial" font-size="20" fill="white" filter="url(#shadow)" text-anchor="middle">${html.escape(title)}</text>
-      <text x="100" y="230" font-family="Arial" font-size="16" fill="white" filter="url(#shadow)" text-anchor="middle">${html.escape(author)}</text>
-      ${barsSvg}
+        <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:${dominantColor1Hex};stop-opacity:1" />
+                <stop offset="100%" style="stop-color:${dominantColor2Hex};stop-opacity:1" />
+            </linearGradient>
+            <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+                <feOffset dx="2" dy="2" result="offsetblur"/>
+                <feMerge> 
+                    <feMergeNode/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+            <mask id="mask">
+                <rect x="25" y="25" width="150" height="150" rx="5" ry="5" fill="white"/>
+            </mask>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grad1)" rx="15" ry="15"/>
+        <image href="${imgBase64Url}" x="25" y="25" height="150" width="150" mask="url(#mask)"/>
+        <text x="100" y="200" font-family="Arial" font-size="20" fill="white" filter="url(#shadow)" text-anchor="middle">${html.escape(title)}</text>
+        <text x="100" y="230" font-family="Arial" font-size="16" fill="white" filter="url(#shadow)" text-anchor="middle">${html.escape(author)}</text>
+        ${barsSvg}
     </svg>
   `;
 }
 
+
+
 module.exports = {
   generateSvgContent,
   generateSvgContentVertical,
+  
 };

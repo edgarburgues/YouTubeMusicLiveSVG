@@ -2,6 +2,7 @@
 node_modules
 oauth.json
 build.bat
+app.log
 # Logs
 
 logs

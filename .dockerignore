@@ -1,7 +1,4 @@
 node_modules;
 npm - debug.log;
 Dockerfile.dockerignore;
-<<<<<<< HEAD
 build.bat;
-=======
->>>>>>> b3f14b4656712d0ffb0b3d4a6ad50e4ac94db261

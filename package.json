@@ -15,12 +15,8 @@
     "express": "^4.19.2",
     "google-auth-library": "^8.6.0",
     "html-escaper": "^3.0.3",
-<<<<<<< HEAD
     "jimp": "^0.22.12",
-    "random": "^4.1.0"
-=======
     "random": "^4.1.0",
     "winston": "^3.13.0"
->>>>>>> b3f14b4656712d0ffb0b3d4a6ad50e4ac94db261
   }
 }
