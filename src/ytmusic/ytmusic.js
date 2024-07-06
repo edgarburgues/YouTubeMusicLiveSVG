@@ -1,3 +1,4 @@
+// ytmusic.js
 const axios = require("axios");
 const { OAuth2Client } = require("google-auth-library");
 
@@ -145,15 +146,17 @@ class YTMusic {
       "contents",
     ]);
 
-    const firstItem = results[0].musicShelfRenderer.contents[0].musicResponsiveListItemRenderer;
-    const thumbnail = firstItem.thumbnail.musicThumbnailRenderer.thumbnail.thumbnails.reduce((max, current) => {
-      return current.width * current.height > max.width * max.height ? current : max;
-    }).url;
+    const items = results[0].musicShelfRenderer.contents;
+    return items.map((item) => {
+      const thumbnail = item.musicResponsiveListItemRenderer.thumbnail.musicThumbnailRenderer.thumbnail.thumbnails.reduce((max, current) => {
+        return current.width * current.height > max.width * max.height ? current : max;
+      }).url;
 
-    const song = firstItem.flexColumns[0].musicResponsiveListItemFlexColumnRenderer.text.runs[0].text;
-    const author = firstItem.flexColumns[1].musicResponsiveListItemFlexColumnRenderer.text.runs[0].text;
+      const song = item.musicResponsiveListItemRenderer.flexColumns[0].musicResponsiveListItemFlexColumnRenderer.text.runs[0].text;
+      const author = item.musicResponsiveListItemRenderer.flexColumns[1].musicResponsiveListItemFlexColumnRenderer.text.runs[0].text;
 
-    return { thumbnail, song, author };
+      return { thumbnail, song, author };
+    });
   }
 
   nav(root, path) {

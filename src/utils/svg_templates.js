@@ -1,5 +1,4 @@
 const html = require("html-escaper");
-const random = require("random");
 
 function generateBarsSvg(dominantColor1Hex, barCount = 10, barSpeed = 1) {
   console.debug(`Generating bars SVG with color: ${dominantColor1Hex}, barCount: ${barCount}, barSpeed: ${barSpeed}`);
@@ -7,11 +6,11 @@ function generateBarsSvg(dominantColor1Hex, barCount = 10, barSpeed = 1) {
   for (let i = 0; i < barCount; i++) {
     let beginTime = (Math.random() * 1.5).toFixed(2);
     bars.push(`
-            <rect x="${200 + i * 25}" y="170" width="20" height="0" fill="${dominantColor1Hex}">
-                <animate attributeName="height" values="0;50;0" dur="${barSpeed}s" repeatCount="indefinite" begin="${beginTime}s"/>
-                <animate attributeName="y" values="170;120;170" dur="${barSpeed}s" repeatCount="indefinite" begin="${beginTime}s"/>
-            </rect>
-        `);
+      <rect x="${200 + i * 25}" y="170" width="20" height="0" fill="${dominantColor1Hex}">
+        <animate attributeName="height" values="0;50;0" dur="${barSpeed}s" repeatCount="indefinite" begin="${beginTime}s"/>
+        <animate attributeName="y" values="170;120;170" dur="${barSpeed}s" repeatCount="indefinite" begin="${beginTime}s"/>
+      </rect>
+    `);
   }
   return bars.join("\n");
 }
@@ -54,7 +53,7 @@ function generateSvgContent(title, author, imgBase64Url, dominantColor1Hex, domi
         <text x="200" y="100" font-family="Arial" font-size="18" fill="white" filter="url(#shadow)">${html.escape(author)}</text>
         ${barsSvg}
     </svg>
-    `;
+  `;
 }
 
 function generateSvgContentVertical(title, author, imgBase64Url, dominantColor1Hex, dominantColor2Hex, barCount = 5, barSpeed = 1) {
@@ -95,7 +94,7 @@ function generateSvgContentVertical(title, author, imgBase64Url, dominantColor1H
         <text x="100" y="230" font-family="Arial" font-size="16" fill="white" filter="url(#shadow)" text-anchor="middle">${html.escape(author)}</text>
         ${barsSvg}
     </svg>
-    `;
+  `;
 }
 
 module.exports = {
