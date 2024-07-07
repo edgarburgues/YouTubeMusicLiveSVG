@@ -10,7 +10,7 @@ This project provides a Bun.js application that serves SVG visualizations based 
   </tr>
   <tr>
     <td>
-      <img height="100%" width="100%" src="https://youtubemusiclivesvg.azurewebsites.net/api/svg?nocache=timestamps" alt="YTMusic Widget"/>
+      [![Build Status](https://youtubemusiclivesvg.azurewebsites.net/api/svg-vinyl?timestamp=${new Date().getTime()})](https://youtubemusiclivesvg.azurewebsites.net/api/svg-vinyl)
     </td>
 
   </tr>
