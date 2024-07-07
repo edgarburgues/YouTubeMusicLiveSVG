@@ -5,7 +5,7 @@ This project provides a Bun.js application that serves SVG visualizations based 
 <table align="center">
   <tr>
     <td colspan="" align="center">
-      <strong>/svg</strong>
+      <strong>/svg-vinyl</strong>
     </td>
   </tr>
   <tr>
