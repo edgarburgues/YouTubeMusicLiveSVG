@@ -19,4 +19,4 @@ WORKDIR /app
 EXPOSE 3000
 
 # Comando por defecto para ejecutar la aplicación
-CMD ["bun", "server.ts"]
+CMD ["bun", "index.ts"]
