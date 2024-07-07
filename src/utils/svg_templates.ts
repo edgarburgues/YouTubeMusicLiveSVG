@@ -1,9 +1,9 @@
-const html = require("html-escaper");
-const { logger } = require("./logger");
+import { escape } from "html-escaper";
+import { logger } from "./logger";
 
-function generateBarsSvg(dominantColor1Hex, barCount = 10, barSpeed = 1) {
+function generateBarsSvg(dominantColor1Hex: string, barCount: number = 10, barSpeed: number = 1): string {
   logger.debug(`Generating bars SVG with color: ${dominantColor1Hex}, barCount: ${barCount}, barSpeed: ${barSpeed}`);
-  let bars = [];
+  let bars: string[] = [];
   for (let i = 0; i < barCount; i++) {
     let beginTime = (Math.random() * 1.5).toFixed(2);
     bars.push(`
@@ -16,7 +16,15 @@ function generateBarsSvg(dominantColor1Hex, barCount = 10, barSpeed = 1) {
   return bars.join("\n");
 }
 
-function generateSvgContent(title, author, imgBase64Url, dominantColor1Hex, dominantColor2Hex, barCount = 10, barSpeed = 1) {
+function generateSvgContent(
+  title: string,
+  author: string,
+  imgBase64Url: string,
+  dominantColor1Hex: string,
+  dominantColor2Hex: string,
+  barCount: number = 10,
+  barSpeed: number = 1
+): string {
   logger.debug(`Generating SVG content for title: ${title}, author: ${author}`);
   const barsSvg = generateBarsSvg(dominantColor1Hex, barCount, barSpeed);
 
@@ -49,14 +57,22 @@ function generateSvgContent(title, author, imgBase64Url, dominantColor1Hex, domi
         </defs>
         <rect width="100%" height="100%" fill="url(#grad1)" rx="15" ry="15"/>
         <image href="${imgBase64Url}" x="25" y="25" height="150" width="150" mask="url(#mask)"/>
-        <text x="200" y="70" font-family="Arial" font-size="24" fill="white" filter="url(#shadow)">${html.escape(title)}</text>
-        <text x="200" y="100" font-family="Arial" font-size="18" fill="white" filter="url(#shadow)">${html.escape(author)}</text>
+        <text x="200" y="70" font-family="Arial" font-size="24" fill="white" filter="url(#shadow)">${escape(title)}</text>
+        <text x="200" y="100" font-family="Arial" font-size="18" fill="white" filter="url(#shadow)">${escape(author)}</text>
         ${barsSvg}
     </svg>
   `;
 }
 
-function generateSvgContentVertical(title, author, imgBase64Url, dominantColor1Hex, dominantColor2Hex, barCount = 5, barSpeed = 1) {
+function generateSvgContentVertical(
+  title: string,
+  author: string,
+  imgBase64Url: string,
+  dominantColor1Hex: string,
+  dominantColor2Hex: string,
+  barCount: number = 5,
+  barSpeed: number = 1
+): string {
   logger.debug(`Generating vertical SVG content for title: ${title}, author: ${author}`);
   const barsSvg = generateBarsSvg(dominantColor1Hex, barCount, barSpeed);
 
@@ -89,14 +105,22 @@ function generateSvgContentVertical(title, author, imgBase64Url, dominantColor1H
         </defs>
         <rect width="100%" height="100%" fill="url(#grad1)" rx="15" ry="15"/>
         <image href="${imgBase64Url}" x="25" y="25" height="150" width="150" mask="url(#mask)"/>
-        <text x="100" y="200" font-family="Arial" font-size="20" fill="white" filter="url(#shadow)" text-anchor="middle">${html.escape(title)}</text>
-        <text x="100" y="230" font-family="Arial" font-size="16" fill="white" filter="url(#shadow)" text-anchor="middle">${html.escape(author)}</text>
+        <text x="100" y="200" font-family="Arial" font-size="20" fill="white" filter="url(#shadow)" text-anchor="middle">${escape(title)}</text>
+        <text x="100" y="230" font-family="Arial" font-size="16" fill="white" filter="url(#shadow)" text-anchor="middle">${escape(author)}</text>
         ${barsSvg}
     </svg>
   `;
 }
 
-function generateRotatingVinylSvg(song, author, thumbnail, color1, color2, barCount = 10, barSpeed = 1) {
+function generateRotatingVinylSvg(
+  song: string,
+  author: string,
+  thumbnail: string,
+  color1: string,
+  color2: string,
+  barCount: number = 10,
+  barSpeed: number = 1
+): string {
   logger.debug(`Generating rotating vinyl SVG for song: ${song}, author: ${author}`);
   const barsSvg = generateBarsSvg(color1, barCount, barSpeed);
 
@@ -111,7 +135,7 @@ function generateRotatingVinylSvg(song, author, thumbnail, color1, color2, barCo
   return `
     <svg width="500" height="200" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%">
           <stop offset="0%" style="stop-color:${color1};stop-opacity:1" />
           <stop offset="100%" style="stop-color:${color2};stop-opacity:1" />
         </linearGradient>
@@ -133,15 +157,11 @@ function generateRotatingVinylSvg(song, author, thumbnail, color1, color2, barCo
         </line>
         <circle cx="75" cy="75" r="5" fill="black"/>
       </g>
-      <text x="200" y="70" font-family="Arial" font-size="24" fill="white" filter="url(#shadow)">${html.escape(song)}</text>
-      <text x="200" y="100" font-family="Arial" font-size="18" fill="white" filter="url(#shadow)">${html.escape(author)}</text>
+      <text x="200" y="70" font-family="Arial" font-size="24" fill="white" filter="url(#shadow)">${escape(song)}</text>
+      <text x="200" y="100" font-family="Arial" font-size="18" fill="white" filter="url(#shadow)">${escape(author)}</text>
       ${barsSvg}
     </svg>
   `;
 }
 
-module.exports = {
-  generateSvgContent,
-  generateSvgContentVertical,
-  generateRotatingVinylSvg,
-};
+export { generateSvgContent, generateSvgContentVertical, generateRotatingVinylSvg };

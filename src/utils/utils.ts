@@ -1,31 +1,10 @@
-const axios = require("axios");
-const ColorThief = require("colorthief");
-const Jimp = require("jimp");
-const fs = require("fs");
-const path = require("path");
+import axios from "axios";
+import ColorThief from "colorthief";
+import Jimp from "jimp";
+import fs from "fs";
+import path from "path";
 
-async function getFirstVideoFromHistory(ytmusic) {
-  console.debug("Fetching first video from history...");
-  try {
-    const history = await ytmusic.getHistory();
-    if (history) {
-      console.debug(`Found video: ${history.song} by ${history.author}`);
-      return {
-        title: history.song,
-        thumbnail: history.thumbnail,
-        author: history.author,
-      };
-    } else {
-      console.debug("No history found");
-      return null;
-    }
-  } catch (error) {
-    console.error(`Error fetching video history: ${error.message}`);
-    return null;
-  }
-}
-
-async function getImageAndPalette(thumbnailUrl) {
+async function getImageAndPalette(thumbnailUrl: string) {
   console.debug(`Fetching image and palette for thumbnail: ${thumbnailUrl}`);
   try {
     const response = await axios.get(thumbnailUrl, { responseType: "arraybuffer" });
@@ -45,7 +24,7 @@ async function getImageAndPalette(thumbnailUrl) {
 
     console.debug(`Dominant colors: ${dominantColor1Hex}, ${dominantColor2Hex}`);
     return { imgBase64Url, dominantColor1Hex, dominantColor2Hex };
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error fetching image and palette: ${error.message}`);
     // Fallback colors and image
     const imgBase64Url =
@@ -62,11 +41,8 @@ async function getImageAndPalette(thumbnailUrl) {
   }
 }
 
-function rgbToHex(color) {
+function rgbToHex(color: [number, number, number]): string {
   return `#${((1 << 24) + (color[0] << 16) + (color[1] << 8) + color[2]).toString(16).slice(1)}`;
 }
 
-module.exports = {
-  getFirstVideoFromHistory,
-  getImageAndPalette,
-};
+export { getImageAndPalette };
