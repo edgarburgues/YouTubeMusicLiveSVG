@@ -87,7 +87,9 @@ class YTMusicController {
         const { imgBase64Url, dominantColor1Hex, dominantColor2Hex } = await getImageAndPalette(firstVideo.thumbnail);
         const svgContent = generateRotatingVinylSvg(firstVideo.song, firstVideo.author, imgBase64Url, dominantColor1Hex, dominantColor2Hex);
         res.setHeader("Content-Type", "image/svg+xml");
-        setNoCacheHeaders(res);
+        res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+        res.setHeader("Pragma", "no-cache");
+        res.setHeader("Expires", "0");
         res.send(svgContent);
       } else {
         res.status(404).json({ error: "No video found in history" });
