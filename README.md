@@ -10,7 +10,7 @@ This project provides a Bun.js application that serves SVG visualizations based 
   </tr>
   <tr>
     <td>
-[![Build Status](https://youtubemusiclivesvg.azurewebsites.net/api/svg-vinyl?timestamp=202407071234)](https://youtubemusiclivesvg.azurewebsites.net/api/svg-vinyl)
+      <img src="https://youtubemusiclivesvg.azurewebsites.net/api/svg-vinyl" />
     </td>
 
   </tr>
