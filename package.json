@@ -1,34 +1,27 @@
 {
   "name": "youtubemusiclivesvg",
   "version": "1.0.0",
-  "description": "Proyecto para generar SVG en vivo basado en el historial de YouTube Music",
-  "main": "index.ts",
+  "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node --loader ts-node/esm index.ts",
-    "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "bun index.ts"
   },
   "dependencies": {
+    "@types/node": "^20.14.10",
     "axios": "^1.7.2",
-    "canvas": "^2.11.2",
+    "canvas": "2.11.2",
     "color-thief-node": "^1.0.4",
     "colorthief": "^2.4.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "google-auth-library": "^8.6.0",
     "html-escaper": "^3.0.3",
-    "jimp": "^0.22.12",
+    "jimp": "0.22.12",
     "random": "^4.1.0",
     "winston": "^3.13.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
-    "@types/html-escaper": "^3.0.2",
-    "@types/node": "^20.14.10",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
-  },
-  "author": "edgarburgues",
-  "license": "ISC"
+    "@types/html-escaper": "^3.0.2"
+  }
 }

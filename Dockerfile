@@ -1,20 +1,27 @@
 # Usar una imagen base de Node.js
-FROM node:18
+FROM node:18-bullseye
 
-# Establecer el directorio de trabajo en el contenedor
+# Instalar Bun manualmente
+RUN curl -fsSL https://bun.sh/install | bash
+
+# Hacer que Bun esté disponible en el PATH
+ENV BUN_INSTALL=/root/.bun
+ENV PATH=$BUN_INSTALL/bin:$PATH
+
+# Crear el directorio de trabajo
 WORKDIR /app
 
-# Copiar los archivos de tu proyecto
-COPY package.json package-lock.json ./
+# Copiar los archivos package.json y bun.lockb
+COPY package.json bun.lockb ./
 
-# Instalar las dependencias
-RUN npm install
+# Instalar las dependencias usando Bun
+RUN bun install
 
-# Copiar el resto de los archivos de la aplicación
+# Copiar el resto de la aplicación
 COPY . .
 
-# Exponer el puerto en el que correrá la aplicación
+# Exponer el puerto
 EXPOSE 3000
 
-# Comando para iniciar la aplicación
-CMD ["npm", "start"]
+# Ejecutar la aplicación
+CMD ["bun", "start"]
