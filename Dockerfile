@@ -1,22 +1,20 @@
-# Dockerfile optimizado
+# Usar una imagen base de Node.js
+FROM node:18
 
-FROM oven/bun:latest
-
-# Instalar git
-RUN apt-get update && apt-get install -y git && apt-get clean
-
-# Copiar y instalar dependencias primero para aprovechar el cacheo
-COPY package.json bun.lockb ./
-RUN bun install
-
-# Copiar el resto de la aplicación
-COPY . /app
-
-# Establecer directorio de trabajo
+# Establecer el directorio de trabajo en el contenedor
 WORKDIR /app
 
-# Exponer el puerto 3000
+# Copiar los archivos de tu proyecto
+COPY package.json package-lock.json ./
+
+# Instalar las dependencias
+RUN npm install
+
+# Copiar el resto de los archivos de la aplicación
+COPY . .
+
+# Exponer el puerto en el que correrá la aplicación
 EXPOSE 3000
 
-# Comando por defecto para ejecutar la aplicación
-CMD ["bun", "index.ts"]
+# Comando para iniciar la aplicación
+CMD ["npm", "start"]
