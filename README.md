@@ -5,12 +5,12 @@ This project provides a Bun.js application that serves SVG visualizations based 
 <table align="center">
   <tr>
     <td colspan="" align="center">
-      <strong>/svg-vinyl</strong>
+      <strong>/svg</strong>
     </td>
   </tr>
   <tr>
     <td>
-      <img src="https://youtubemusiclivesvg.azurewebsites.net/api/svg-vinyl" />
+      <img src="https://youtubemusiclivesvg.azurewebsites.net/api/svg" />
     </td>
   </tr>
 </table>
