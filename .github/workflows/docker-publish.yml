@@ -29,4 +29,4 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: edgarburgues/youtube-music-live-svg:latest # Reemplaza con tu nombre de usuario y nombre del repositorio de Docker Hub
+          tags: edgarburgues/youtube-music-live-svg:latest
