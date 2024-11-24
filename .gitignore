@@ -178,4 +178,5 @@ dist
 .DS_Store
 .env.example
 out.txt
-promptCreator.py
+prompt-creator.py
+tests

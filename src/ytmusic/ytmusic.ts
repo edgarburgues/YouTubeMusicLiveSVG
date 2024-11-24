@@ -1,5 +1,4 @@
 import axios from "axios";
-import { OAuth2Client } from "google-auth-library";
 import { logger } from "../utils/logger";
 
 const YTM_DOMAIN = "https://music.youtube.com";
@@ -7,16 +6,13 @@ const YTM_BASE_API = `${YTM_DOMAIN}/youtubei/v1/`;
 const YTM_PARAMS = "?alt=json";
 const USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0";
 
-const OAUTH_CLIENT_ID = "861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com";
-const OAUTH_CLIENT_SECRET = "SboVhoG9s0rNafixCSGGKXAT";
-
-if (!process.env.OAUTH_JSON) {
-  throw new Error("OAUTH_JSON environment variable not set. Please set it in the environment variables.");
+if (!process.env.BROWSER_JSON) {
+  throw new Error("BROWSER_JSON environment variable not set. Please set it in the environment variables.");
 }
 
-const oauthJson = JSON.parse(process.env.OAUTH_JSON);
+const browserJson = JSON.parse(process.env.BROWSER_JSON);
 
-function initializeHeaders(auth: string) {
+function initializeHeaders() {
   const headers: {
     "user-agent": string;
     accept: string;
@@ -24,18 +20,31 @@ function initializeHeaders(auth: string) {
     "content-type": string;
     "content-encoding": string;
     origin: string;
-    authorization?: string; // Add the 'authorization' property
+    authorization?: string;
+    cookie: string;
   } = {
-    "user-agent": USER_AGENT,
-    accept: "*/*",
-    "accept-encoding": "gzip, deflate",
-    "content-type": "application/json",
-    "content-encoding": "gzip",
-    origin: YTM_DOMAIN,
+    "user-agent": browserJson["user-agent"] || USER_AGENT,
+    accept: browserJson["accept"] || "*/*",
+    "accept-encoding": browserJson["accept-encoding"] || "gzip, deflate",
+    "content-type": browserJson["content-type"] || "application/json",
+    "content-encoding": browserJson["content-encoding"] || "gzip",
+    origin: browserJson["origin"] || YTM_DOMAIN,
+    cookie: browserJson["cookie"] || "",
   };
-  if (auth) {
-    headers.authorization = `Bearer ${auth}`;
+
+  const sapisid = browserJson["cookie"]
+    .split("; ")
+    .find((cookie: string) => cookie.startsWith("__Secure-3PAPISID="))
+    ?.split("=")[1];
+
+  if (!sapisid) {
+    throw new Error("Missing __Secure-3PAPISID in cookies. Ensure BROWSER_JSON contains valid cookies.");
   }
+
+  const timestamp = Math.floor(Date.now() / 1000);
+  const hash = require("crypto").createHash("sha1").update(`${timestamp} ${sapisid} ${YTM_DOMAIN}`).digest("hex");
+  headers.authorization = `SAPISIDHASH ${timestamp}_${hash}`;
+
   return headers;
 }
 
@@ -62,43 +71,13 @@ async function getVisitorId() {
 }
 
 class YTMusic {
-  private auth: string;
-  private refreshToken: string;
-  private oauth2Client: OAuth2Client;
   private context: any;
   private headers: any;
 
   constructor() {
-    logger.debug("Initializing YTMusic...");
-    this.auth = oauthJson.access_token;
-    this.refreshToken = oauthJson.refresh_token;
-
-    this.oauth2Client = new OAuth2Client(OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET);
-    this.oauth2Client.setCredentials({
-      access_token: this.auth,
-      refresh_token: this.refreshToken,
-    });
-
+    logger.debug("YTMusic initialized.");
     this.context = initializeContext();
-    this.headers = initializeHeaders(this.auth);
-  }
-
-  async refreshAccessToken() {
-    logger.debug("Refreshing access token...");
-    try {
-      const { credentials } = await this.oauth2Client.refreshAccessToken();
-      this.auth = credentials.access_token as string;
-
-      // Update environment variables with the new token
-      process.env.OAUTH_ACCESS_TOKEN = credentials.access_token ?? "";
-
-      // Update headers with the new token
-      this.headers = initializeHeaders(this.auth);
-      logger.debug("Access token refreshed successfully.");
-    } catch (error: any) {
-      logger.error("Error refreshing access token:", error.message);
-      throw new Error("Failed to refresh access token.");
-    }
+    this.headers = initializeHeaders();
   }
 
   async sendRequest(endpoint: string, body: any, additionalParams: string = "") {
@@ -109,68 +88,55 @@ class YTMusic {
     }
 
     try {
-      logger.debug(`Sending request to endpoint: ${endpoint}`);
+      logger.debug(`Request: POST ${endpoint}`);
       const response = await axios.post(`${YTM_BASE_API}${endpoint}${YTM_PARAMS}${additionalParams}`, body, {
         headers: this.headers,
       });
+      logger.debug(`Response: ${endpoint} - Status ${response.status}`);
       return response.data;
     } catch (error: any) {
-      if (error.response && error.response.status === 401) {
-        // If the error is 401 (Unauthorized), attempt to refresh the token and retry the request
-        logger.warn("Access token expired, attempting to refresh...");
-        await this.refreshAccessToken();
-        // Retry the request with the new token
-        try {
-          const response = await axios.post(`${YTM_BASE_API}${endpoint}${YTM_PARAMS}${additionalParams}`, body, {
-            headers: this.headers,
-          });
-          return response.data;
-        } catch (retryError: any) {
-          const message = retryError.response
-            ? `Server returned HTTP ${retryError.response.status}: ${retryError.response.statusText}.`
-            : `Error sending request after refreshing token: ${retryError.message}`;
-          logger.error(message);
-          throw new Error(message);
-        }
-      } else {
-        const message = error.response
-          ? `Server returned HTTP ${error.response.status}: ${error.response.statusText}.`
-          : `Error sending request: ${error.message}`;
-        logger.error(message);
-        throw new Error(message);
-      }
+      const message = error.response ? `HTTP ${error.response.status}: ${error.response.statusText}` : `Error: ${error.message}`;
+      logger.error(`Request failed: ${endpoint} - ${message}`);
+      throw new Error(message);
     }
   }
 
   async getHistory() {
     const endpoint = "browse";
     const body = { browseId: "FEmusic_history" };
-    const response = await this.sendRequest(endpoint, body);
 
-    const results = this.nav(response, [
-      "contents",
-      "singleColumnBrowseResultsRenderer",
-      "tabs",
-      "0",
-      "tabRenderer",
-      "content",
-      "sectionListRenderer",
-      "contents",
-    ]);
+    logger.debug(`Fetching history...`);
+    try {
+      const response = await this.sendRequest(endpoint, body);
 
-    const items = results[0].musicShelfRenderer.contents;
-    return items.map((item: any) => {
-      const thumbnail = item.musicResponsiveListItemRenderer.thumbnail.musicThumbnailRenderer.thumbnail.thumbnails.reduce(
-        (max: any, current: any) => {
-          return current.width * current.height > max.width * max.height ? current : max;
-        }
-      ).url;
+      const results = this.nav(response, [
+        "contents",
+        "singleColumnBrowseResultsRenderer",
+        "tabs",
+        "0",
+        "tabRenderer",
+        "content",
+        "sectionListRenderer",
+        "contents",
+      ]);
 
-      const song = item.musicResponsiveListItemRenderer.flexColumns[0].musicResponsiveListItemFlexColumnRenderer.text.runs[0].text;
-      const author = item.musicResponsiveListItemRenderer.flexColumns[1].musicResponsiveListItemFlexColumnRenderer.text.runs[0].text;
+      const items = results[0].musicShelfRenderer.contents;
+      logger.debug(`Fetched ${items.length} items from history.`);
 
-      return { thumbnail, song, author };
-    });
+      return items.map((item: any) => {
+        const thumbnail = item.musicResponsiveListItemRenderer.thumbnail.musicThumbnailRenderer.thumbnail.thumbnails.reduce(
+          (max: any, current: any) => (current.width * current.height > max.width * max.height ? current : max)
+        ).url;
+
+        const song = item.musicResponsiveListItemRenderer.flexColumns[0].musicResponsiveListItemFlexColumnRenderer.text.runs[0].text;
+        const author = item.musicResponsiveListItemRenderer.flexColumns[1].musicResponsiveListItemFlexColumnRenderer.text.runs[0].text;
+
+        return { thumbnail, song, author };
+      });
+    } catch (error: any) {
+      logger.error(`Error fetching history: ${error.message}`);
+      throw new Error(`Failed to fetch history: ${error.message}`);
+    }
   }
 
   nav(root: any, path: string[]) {
@@ -182,8 +148,7 @@ class YTMusic {
         root = root[key];
       }
     } catch (e: any) {
-      let key;
-      throw new Error(`Unable to find '${key}' using path ${JSON.stringify(path)} on ${JSON.stringify(root)}, exception: ${e.message}`);
+      throw new Error(`Navigation error: ${e.message}`);
     }
     return root;
   }
