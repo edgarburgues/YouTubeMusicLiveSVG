@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { YTMusicController } from "../controllers/ytmusic.controller";
+import { YTMusicController } from "../controllers/ytmusic.controller.js";
 
 const router = Router();
 

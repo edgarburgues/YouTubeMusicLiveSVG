@@ -1,7 +1,6 @@
 {
   "name": "youtubemusiclivesvg",
   "version": "1.0.0",
-  "main": "server.js",
   "type": "module",
   "scripts": {
     "start": "bun index.ts"
@@ -19,5 +18,8 @@
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/html-escaper": "^3.0.2"
+  },
+  "engines": {
+    "bun": ">=1.1.0"
   }
 }

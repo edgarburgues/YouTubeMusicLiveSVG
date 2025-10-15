@@ -2,3 +2,7 @@ node_modules
 npm-debug.log
 Dockerfile.dockerignore
 build.bat
+.git
+.gitignore
+app.log
+tmp

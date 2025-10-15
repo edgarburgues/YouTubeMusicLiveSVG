@@ -1,27 +1,12 @@
-# Usar una imagen base de Node.js
-FROM node:18-bullseye
+FROM oven/bun:1.1.20-debian
 
-# Instalar Bun manualmente
-RUN curl -fsSL https://bun.sh/install | bash
-
-# Hacer que Bun esté disponible en el PATH
-ENV BUN_INSTALL=/root/.bun
-ENV PATH=$BUN_INSTALL/bin:$PATH
-
-# Crear el directorio de trabajo
+ENV NODE_ENV=production
 WORKDIR /app
 
-# Copiar los archivos package.json y bun.lockb
 COPY package.json bun.lockb ./
+RUN bun install --frozen-lockfile --production
 
-# Instalar las dependencias usando Bun
-RUN bun install
-
-# Copiar el resto de la aplicación
 COPY . .
 
-# Exponer el puerto
 EXPOSE 3000
-
-# Ejecutar la aplicación
-CMD ["bun", "start"]
+CMD ["bun", "run", "start"]
